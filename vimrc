@@ -41,7 +41,7 @@ Plugin 'altercation/vim-colors-solarized'
 
 
 "Latex plug in
-"Plugin 'lervag/vimtex'
+Plugin 'lervag/vimtex'
 
 "Make
 "Plugin 'neomake/neomake'
@@ -174,8 +174,16 @@ nnoremap . A
 
 " resizing
 
-nnoremap <silent> <Leader>+ :exe "resize " . (winheight(0) * 3/2)<CR>
-nnoremap <silent> <Leader>- :exe "resize " . (winheight(0) * 2/3)<CR>
+"nnoremap <silent> <Up> :exe "resize " . (winheight(0) * 3/2)<CR>
+"nnoremap <silent> <Down> :exe "resize " . (winheight(0) * 2/3)<CR>
+
+nnoremap <silent> <Right> :exe "vertical resize +5 "<CR>
+nnoremap <silent> <Left> :exe "vertical resize -5 "<CR>
+
+
+nnoremap <silent> <Up> :exe "resize +5 "<CR>
+nnoremap <silent> <Down> :exe "resize -5 "<CR>
+
 
 nnoremap -1 :m .-2<CR>==
 nnoremap +1 :m .+1<CR>==
@@ -296,17 +304,26 @@ vnoremap <leader>m :MaximizerToggle<CR>gv
 
 " vimtex
 
-"let g:tex_flavor='latex'
-"let g:vimtex_view_method='mupdf'
+let g:tex_flavor='latex'
+let g:vimtex_view_method='mupdf'
 "nmap <localleader>c  <Plug>vimtex-compiler
 "let g:vimtex_enabled=1
 "g:vimtex_view_general_options_latexmk
 "let g:vimtex_compiler_latexmk='1'
 
+if !exists('g:ycm_semantic_triggers')
+    let g:ycm_semantic_triggers = {}
+endif
+au VimEnter * let g:ycm_semantic_triggers.tex=g:vimtex#re#youcompleteme
+
+
+let g:vimtex_grammar_textidote = {'jar': '/opt/textidote/textidote.jar'}
 
 
 
+" syntastic
 
+let g:syntastic_tex_checkers = ["lacheck"]
 
 
 
