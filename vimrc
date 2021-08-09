@@ -10,11 +10,9 @@ call vundle#begin()
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
 
-
 " python
 Plugin 'vim-scripts/indentpython.vim'
 Plugin 'nvie/vim-flake8'
-
 
 " syntaxt checker
 "TODO: congfigure for latex
@@ -22,7 +20,6 @@ Plugin 'vim-syntastic/syntastic'
 
 " Utility
 Plugin 'scrooloose/nerdtree'
-
 
 " Plugin 'git@github.com:kien/ctrlp.vim.git'          "file search"
 Plugin 'ycm-core/YouCompleteMe.git'
@@ -38,25 +35,22 @@ Plugin 'szw/vim-maximizer'
 " Plugin 'jnurmine/Zenburn'
 Plugin 'altercation/vim-colors-solarized'
 
-
-
 "Latex plug in
 Plugin 'lervag/vimtex'
 
 "Make
 "Plugin 'neomake/neomake'
 
-
 " Snippets TODO: Put back in!
-"Plugin 'SirVer/ultisnips'
-"Plugin 'honza/vim-snippets'
+Plugin 'SirVer/ultisnips'
+Plugin 'honza/vim-snippets'
 
 
 
 " Snippets
 
 " Writing
-" Plugin 'reedes/vim-pencil'
+Plugin 'reedes/vim-pencil'
 " All of your Plugins must be added before the following line
 
 call vundle#end()            " required
@@ -81,10 +75,11 @@ let &t_TE = ""
 " python
 set encoding=utf-8
 
-" colemake mapping
+vmap <leader>y :w! /tmp/vitmp<CR>                                                                   
+nmap <leader>p :r! cat /tmp/vitmp<CR>        
 
-
-
+"""""" basic colemake mapping
+"Navigation
 nnoremap n h
 nnoremap N H
 nnoremap e j
@@ -93,7 +88,6 @@ nnoremap i k
 "nnoremap I K
 nnoremap o l
 "nnoremap O L
-
 
 
 noremap k n
@@ -112,19 +106,22 @@ nnoremap Y O
 "xnoremap y
 "xnoremap J Y
 
-vnoremap n h
-xnoremap n h
-vnoremap e j
-xnoremap e j
-vnoremap i k
-xnoremap i k
 
+" Visual remappings
+
+
+vnoremap n h
+vnoremap e j
+vnoremap i k
 vnoremap o l
+
+xnoremap n h
+xnoremap e j
+xnoremap i k
 xnoremap o l
 
 xnoremap u i
 xnoremap U I
-
 
 
 nnoremap <SPACE> <Nop>
@@ -138,8 +135,6 @@ syntax on
 
 noremap <leader>ev :vsplit $MYVIMRC<CR>
 noremap <leader>ei :vsplit ~/.config/i3/config<CR>
-noremap <leader>im :vsplit ~/habits/impulseList<CR>
-noremap <leader>ho :split ~/habits/hours<CR>
 noremap <leader>sv :source $MYVIMRC<CR>
 noremap <leader>w :w!<CR>
 noremap <leader>q :q<CR>
@@ -151,7 +146,7 @@ nnoremap <leader>o :wincmd l<CR>
 nnoremap <leader>l :UndotreeShow<CR>
 
 
-set relativenumber
+"set relativenumber
 set number
 " set virtualedit=onemore
 
@@ -162,10 +157,22 @@ nnoremap N B
 nnoremap 0 $
 nnoremap O W
 nnoremap I H
-nnoremap 9 <PageUp>
+nnoremap 9 <C-u>
+"nnoremap 9 <PageUp>
 nnoremap E L
-nnoremap 8 <PageDown>
+nnoremap 8 <C-d> 
+"nnoremap 8 <PageDown>
 
+vnoremap 7 ^
+vnoremap N B
+vnoremap 0 $
+vnoremap O W
+vnoremap I H
+vnoremap 9 <C-u>
+vnoremap E L
+vnoremap 8 <C-d> 
+
+ 
 " insert
 nnoremap . A
 
@@ -187,25 +194,31 @@ nnoremap <silent> <Down> :exe "resize -5 "<CR>
 
 nnoremap -1 :m .-2<CR>==
 nnoremap +1 :m .+1<CR>==
+
 vnoremap +1 :m '>+1<CR>gv==gv
 vnoremap -1 :m '<-2<CR>gv==gv
 
 " Writing configurations
 
 
-" set nocompatible
-" filetype plugin on       " may already be in your .vimrc
-"let g:pencil#wrapModeDefault = 'soft'   " default is 'hard'
+set nocompatible
+filetype plugin on       " may already be in your .vimrc
+let g:pencil#wrapModeDefault = 'soft'
+augroup pencil
+  autocmd!
+  autocmd FileType markdown,mkd call pencil#init()
+  autocmd FileType text      call pencil#init()
+  autocmd FileType text set nonumber
+augroup END
 
-" augroup pencil
-"   autocmd!
-"   autocmd FileType markdown,mkd call pencil#init()
-"   autocmd FileType text         call pencil#init()
-" augroup END
- 
+"augroup text_c
+"  autocmd!
+"  :autocmd text c set nonumber
+"augroup end
 
-nnoremap <leader>pt :NERDTreeToggle<Enter>
-nnoremap <silent>  <leader>pv :NERDTreeFind<CR>
+
+"nnoremap <leader> :NERDTreeToggle<Enter>
+nnoremap <silent>  <leader>tr :NERDTreeFocus<Enter>
 let NERDTreeMapUp= "i"
 let NERDTreeMenuUp= "i"
 let NERDTreeMapDown= "e"
@@ -295,11 +308,12 @@ vnoremap <leader>m :MaximizerToggle<CR>gv
 "
 "
 "" Ultisnips
-"let g:UltiSnipsExpandTrigger="<tab>"
-"let g:UltiSnipsJumpForwardTrigger="<c-b>"
-"let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+let g:UltiSnipsExpandTrigger="<c-s>"
+let g:UltiSnipsJumpForwardTrigger="<c-o>"
+let g:UltiSnipsJumpBackwardTrigger="<c-n>"
 
-
+" If you want :UltiSnipsEdit to split your window.
+let g:UltiSnipsEditSplit="vertical"
 
 
 " vimtex
@@ -317,9 +331,34 @@ endif
 au VimEnter * let g:ycm_semantic_triggers.tex=g:vimtex#re#youcompleteme
 
 
-let g:vimtex_grammar_textidote = {'jar': '/opt/textidote/textidote.jar'}
+
+" let g:vimtex_grammar_vlty = {'lt_directory' :'/home/ole/LT', 'show_suggestions' : 1}
+map <leader>c :w <bar> compiler vlty <bar> make <bar> :cw <cr><esc>
+
+set spelllang=en_gb
 
 
+let g:vimtex_grammar_vlty = {
+      \ 'lt_directory': '~/lib/LanguageTool',
+      \ 'lt_command': '',
+      \ 'lt_disable': 'WHITESPACE_RULE',
+      \ 'lt_enable': '',
+      \ 'lt_disablecategories': '',
+      \ 'lt_enablecategories': '',
+      \ 'server': 'no',
+      \ 'shell_options': '',
+      \ 'show_suggestions': 1,
+      \ 'encoding': 'auto',
+      \}
+
+let g:vimtex_quickfix_ignore_filters = [
+      \ 'Marginpar on page',
+      \ 'Reference',
+      \ 'Overfull',
+      \ 'Reference',
+      \ 'Citation',
+      \ 'Underfull',
+      \]
 
 " syntastic
 
